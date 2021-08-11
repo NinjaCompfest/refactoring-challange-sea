@@ -19,10 +19,18 @@ jobs:
         with:
           node-version: "16.x"
 
-      - name: installing package
+      - name: installing package on first challenge
         working-directory: ./first_challenge
         run: npm install
 
-      - name: running test
+      - name: running test on first challenge
         working-directory: ./first_challenge
+        run: npm run test
+
+      - name: installing package on second challenge
+        working-directory: ./second_challenge
+        run: npm install
+
+      - name: running test on second challenge
+        working-directory: ./second_challenge
         run: npm run test
