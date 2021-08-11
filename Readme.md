@@ -19,23 +19,3 @@ editing/refactoring tests, they are just there to guide you and we don't
 expect you to spend time working on them.
 
 **This challange is done as a team**. Your team have **40 minutes** to complete this exercise. You are not expected to have enough time to make all of the changes you would like. Part of the exercise is the time constraint: you have to prioritize what you think will be the most beneficial refactor, and weigh it with how much time it will take you. **Your team will have to present** the changes you made at the end of the session.
-
----
-
-### How to Use This Repository
-
-1. Clone or fork this repository
-2. Install dependencies
-
-```
-npm install
-```
-
-2. Refactor
-3. Run test
-
-```
-npm run test
-```
-
-4. Commit and push all the changes to your repository
