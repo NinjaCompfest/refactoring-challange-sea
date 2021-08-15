@@ -3,6 +3,15 @@ const fs = require("fs");
 const path = require("path");
 
 class FundingRaised {
+  static readData = () => {
+    const funding_file = "startup_funding.csv";
+    const file_data = fs
+      .readFileSync(path.join(__dirname, "..", funding_file))
+      .toString();
+    let csv_data = parseCsvSync(file_data);
+    return csv_data;
+  };
+
   static mapping = (row = []) => {
     let mapped = {};
     mapped.permalink = row[0];
@@ -18,32 +27,40 @@ class FundingRaised {
     return mapped;
   };
 
-  static filterData = (options, csv_data) => {
-    if (options.company_name) {
-      csv_data = csv_data.filter((row) => options.company_name == row[1]);
-    }
+  static filterData = (options = {}, csv_data = []) => {
+    options.company_name &&
+      (csv_data = csv_data.filter((row) => options.company_name == row[1]));
 
-    if (options.city) {
-      csv_data = csv_data.filter((row) => options.city == row[4]);
-    }
+    options.city &&
+      (csv_data = csv_data.filter((row) => options.city == row[4]));
 
-    if (options.state) {
-      csv_data = csv_data.filter((row) => options.state == row[5]);
-    }
+    options.state &&
+      (csv_data = csv_data.filter((row) => options.state == row[5]));
 
-    if (options.round) {
-      csv_data = csv_data.filter((row) => options.round == row[9]);
-    }
+    options.round &&
+      (csv_data = csv_data.filter((row) => options.round == row[9]));
+
+    return csv_data;
+  };
+
+  static filterData = (options = {}, csv_data = []) => {
+    options.company_name &&
+      (csv_data = csv_data.filter((row) => options.company_name == row[1]));
+
+    options.city &&
+      (csv_data = csv_data.filter((row) => options.city == row[4]));
+
+    options.state &&
+      (csv_data = csv_data.filter((row) => options.state == row[5]));
+
+    options.round &&
+      (csv_data = csv_data.filter((row) => options.round == row[9]));
 
     return csv_data;
   };
 
   static where(options = {}) {
-    const funding_file = "startup_funding.csv";
-    const file_data = fs
-      .readFileSync(path.join(__dirname, "..", funding_file))
-      .toString();
-    let csv_data = parseCsvSync(file_data);
+    let csv_data = this.readData();
 
     const funding_data = [];
 
@@ -58,35 +75,11 @@ class FundingRaised {
   }
 
   static findBy(options = {}) {
-    const funding_file = "startup_funding.csv";
-    const file_data = fs
-      .readFileSync(path.join(__dirname, "..", funding_file))
-      .toString();
-    let csv_data = parseCsvSync(file_data);
+    let csv_data = this.readData();
 
-    if (options.company_name) {
-      csv_data = csv_data.filter((row) => options.company_name == row[1]);
-      const row = csv_data[0];
-      return this.mapping(row);
-    }
-
-    if (options.city) {
-      csv_data = csv_data.filter((row) => options.city == row[4]);
-      const row = csv_data[0];
-      return this.mapping(row);
-    }
-
-    if (options.state) {
-      csv_data = csv_data.filter((row) => options.state == row[5]);
-      const row = csv_data[0];
-      return this.mapping(row);
-    }
-
-    if (options.round) {
-      csv_data = csv_data.filter((row) => options.round == row[9]);
-      const row = csv_data[0];
-      return this.mapping(row);
-    }
+    csv_data = this.filterData(options, csv_data);
+    const row = csv_data[0];
+    return this.mapping(row);
   }
 }
 
